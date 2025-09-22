@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/platform/platform_detector.dart';
 
 class MobileSplashScreen extends StatefulWidget {
-  const MobileSplashScreen({Key? key}) : super(key: key);
+  const MobileSplashScreen({super.key});
 
   @override
   State<MobileSplashScreen> createState() => _MobileSplashScreenState();
@@ -68,7 +68,7 @@ class _MobileSplashScreenState extends State<MobileSplashScreen>
                           borderRadius: BorderRadius.circular(24),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
+                              color: Colors.black.withValues(alpha: 0.2),
                               blurRadius: 20,
                               offset: const Offset(0, 10),
                             ),
@@ -122,9 +122,9 @@ class _MobileSplashScreenState extends State<MobileSplashScreen>
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
+                            color: Colors.white.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Colors.white.withOpacity(0.3)),
+                            border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
                           ),
                           child: const Row(
                             mainAxisSize: MainAxisSize.min,

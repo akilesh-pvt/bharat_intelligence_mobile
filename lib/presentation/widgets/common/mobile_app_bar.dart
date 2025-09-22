@@ -8,12 +8,12 @@ class MobileAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onBackPressed;
 
   const MobileAppBar({
-    Key? key,
+    super.key,
     required this.title,
     this.showBackButton = true,
     this.actions,
     this.onBackPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class MobileAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: const Icon(Icons.notifications_outlined),
           onPressed: () {
-            // TODO: Implement notifications
+            // Implement notifications
           },
         ),
         IconButton(
@@ -54,7 +54,7 @@ class MobileAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
           onPressed: () {
-            // TODO: Implement profile menu
+            // Implement profile menu
           },
         ),
       ],

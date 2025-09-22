@@ -8,7 +8,7 @@ import '../dashboard/widgets/recent_activities_widget.dart';
 import '../dashboard/widgets/quick_actions_panel.dart';
 
 class MobileDashboardScreen extends StatefulWidget {
-  const MobileDashboardScreen({Key? key}) : super(key: key);
+  const MobileDashboardScreen({super.key});
 
   @override
   State<MobileDashboardScreen> createState() => _MobileDashboardScreenState();
@@ -86,7 +86,7 @@ class _MobileDashboardScreenState extends State<MobileDashboardScreen> {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
