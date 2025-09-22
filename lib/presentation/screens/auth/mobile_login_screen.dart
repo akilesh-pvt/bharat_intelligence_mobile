@@ -6,7 +6,7 @@ import '../../../core/platform/platform_detector.dart';
 import '../../../config/environment.dart';
 
 class MobileLoginScreen extends StatefulWidget {
-  const MobileLoginScreen({Key? key}) : super(key: key);
+  const MobileLoginScreen({super.key});
 
   @override
   State<MobileLoginScreen> createState() => _MobileLoginScreenState();
@@ -39,7 +39,7 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.blue.withOpacity(0.3),
+                            color: Colors.blue.withValues(alpha: 0.3),
                             blurRadius: 20,
                             offset: const Offset(0, 10),
                           ),
@@ -197,18 +197,18 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
         );
         if (response) _navigateToDashboard();
       } else {
-        // Mobile Google Sign-In
-        final GoogleSignIn googleSignIn = GoogleSignIn(
+        // Mobile Google Sign-In - Updated API
+        final googleSignIn = GoogleSignIn(
           clientId: Environment.googleClientIdAndroid,
         );
-        final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+        final googleUser = await googleSignIn.signIn();
         
         if (googleUser != null) {
-          final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+          final googleAuth = await googleUser.authentication;
           final response = await Supabase.instance.client.auth.signInWithIdToken(
             provider: OAuthProvider.google,
             idToken: googleAuth.idToken!,
-            accessToken: googleAuth.accessToken!,
+            accessToken: googleAuth.accessToken,
           );
           if (response.user != null) _navigateToDashboard();
         }
