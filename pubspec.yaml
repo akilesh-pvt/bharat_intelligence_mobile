@@ -17,34 +17,6 @@ dependencies:
   flutter_bloc: ^8.1.6
   equatable: ^2.0.5
   
-  # Backend & Database
-  supabase_flutter: ^2.8.0
-  
-  # Authentication (works on both mobile and web)
-  google_sign_in: ^6.2.1
-  
-  # Dependency Injection
-  get_it: ^8.0.2
-  injectable: ^2.4.4
-  
-  # HTTP & API
-  dio: ^5.7.0
-  
-  # Storage (platform adaptive)
-  shared_preferences: ^2.3.2
-  flutter_secure_storage: ^9.2.2
-  hive_flutter: ^1.1.0
-  
-  # Mobile features that work in Chrome for testing
-  image_picker: ^1.1.2
-  cached_network_image: ^3.4.1
-  permission_handler: ^11.3.1
-  
-  # Location & Maps
-  geolocator: ^13.0.1
-  geocoding: ^3.0.0
-  google_maps_flutter: ^2.9.0
-  
   # Utilities
   intl: ^0.19.0
   flutter_dotenv: ^5.1.0
@@ -53,10 +25,7 @@ dependencies:
   # Navigation
   go_router: ^14.6.1
   
-  # Form Handling
-  reactive_forms: ^17.0.1
-  
-  # Updated to resolve conflicts
+  # Mobile-specific
   device_info_plus: ^11.1.0
   connectivity_plus: ^6.1.0
   package_info_plus: ^8.1.0
@@ -65,10 +34,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-  build_runner: ^2.4.13
-  injectable_generator: ^2.6.2
-  json_serializable: ^6.8.0
-  json_annotation: ^4.9.0
 
 flutter:
   uses-material-design: true
@@ -77,14 +42,3 @@ flutter:
     - assets/images/
     - assets/icons/
     - .env
-  
-  fonts:
-    - family: Inter
-      fonts:
-        - asset: assets/fonts/Inter-Regular.ttf
-        - asset: assets/fonts/Inter-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Inter-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/Inter-Bold.ttf
-          weight: 700

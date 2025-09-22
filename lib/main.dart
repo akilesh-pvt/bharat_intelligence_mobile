@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'app/mobile_app.dart';
 import 'core/platform/platform_detector.dart';
-import 'config/environment.dart';
+import 'app/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Load environment variables
-  await dotenv.load(fileName: ".env");
-  
-  // Initialize Supabase
-  await Supabase.initialize(
-    url: Environment.supabaseUrl,
-    anonKey: Environment.supabaseAnonKey,
-  );
+  // Load environment variables (optional - using fallback if missing)
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    print('Note: .env file not found, using defaults');
+  }
   
   // Mobile-specific configurations (ignored on web)
   if (PlatformDetector.isMobile) {
@@ -90,6 +86,26 @@ class BharatIntelligenceMobileApp extends StatelessWidget {
         brightness: Brightness.light,
       ),
       scaffoldBackgroundColor: const Color(0xFFF9FAFB),
+      appBarTheme: const AppBarTheme(
+        centerTitle: true,
+        elevation: 0,
+        scrolledUnderElevation: 1,
+      ),
+      cardTheme: CardThemeData(
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        margin: const EdgeInsets.all(8),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
     );
   }
 }

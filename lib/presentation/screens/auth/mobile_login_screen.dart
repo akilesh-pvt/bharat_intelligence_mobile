@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import '../../../core/platform/platform_detector.dart';
-import '../../../config/environment.dart';
 
 class MobileLoginScreen extends StatefulWidget {
   const MobileLoginScreen({super.key});
@@ -103,25 +100,17 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                                   height: 20,
                                   child: CircularProgressIndicator(strokeWidth: 2),
                                 )
-                              : Row(
+                              : const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Container(
-                                      width: 24,
-                                      height: 24,
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: const Icon(
-                                        Icons.g_mobiledata,
-                                        color: Colors.white,
-                                        size: 20,
-                                      ),
+                                    Icon(
+                                      Icons.login,
+                                      color: Colors.red,
+                                      size: 24,
                                     ),
-                                    const SizedBox(width: 16),
-                                    const Text(
-                                      'Continue with Google',
+                                    SizedBox(width: 16),
+                                    Text(
+                                      'Continue with Google (Demo)',
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
@@ -170,7 +159,7 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'You\'re viewing the mobile app in Chrome. The actual mobile experience may vary.',
+                        'You\'re viewing the mobile app in Chrome. Click the button above to test the login flow.',
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.amber[800],
@@ -188,30 +177,16 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
   }
 
   Future<void> _handleGoogleSignIn() async {
+    if (!mounted) return;
     setState(() => _isLoading = true);
+    
     try {
-      if (PlatformDetector.isWeb) {
-        // Web-based Google Sign-In for Chrome testing
-        final response = await Supabase.instance.client.auth.signInWithOAuth(
-          OAuthProvider.google,
-        );
-        if (response) _navigateToDashboard();
-      } else {
-        // Mobile Google Sign-In - Updated API
-        final googleSignIn = GoogleSignIn(
-          clientId: Environment.googleClientIdAndroid,
-        );
-        final googleUser = await googleSignIn.signIn();
-        
-        if (googleUser != null) {
-          final googleAuth = await googleUser.authentication;
-          final response = await Supabase.instance.client.auth.signInWithIdToken(
-            provider: OAuthProvider.google,
-            idToken: googleAuth.idToken!,
-            accessToken: googleAuth.accessToken,
-          );
-          if (response.user != null) _navigateToDashboard();
-        }
+      // Demo authentication - simulates login for testing
+      await Future.delayed(const Duration(seconds: 2));
+      
+      if (mounted) {
+        // Navigate to dashboard using GoRouter
+        context.go('/dashboard');
       }
     } catch (e) {
       if (mounted) {
@@ -227,9 +202,5 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
         setState(() => _isLoading = false);
       }
     }
-  }
-
-  void _navigateToDashboard() {
-    context.go('/dashboard');
   }
 }
