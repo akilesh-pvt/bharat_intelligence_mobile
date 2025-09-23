@@ -7,15 +7,15 @@ class AppRouter {
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => const SplashScreen(),
+        builder: (context, state) => SplashScreen(),
       ),
       GoRoute(
         path: '/login',
-        builder: (context, state) => const LoginScreen(),
+        builder: (context, state) => LoginScreen(),
       ),
       GoRoute(
         path: '/dashboard',
-        builder: (context, state) => const DashboardScreen(),
+        builder: (context, state) => DashboardScreen(),
       ),
     ],
   );
@@ -28,7 +28,8 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
@@ -36,20 +37,20 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   void initState() {
     super.initState();
-    
+
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
     );
-    
+
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
     );
-    
+
     _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.elasticOut),
     );
-    
+
     _startAnimation();
   }
 
@@ -115,7 +116,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                         ),
                       ),
                       const SizedBox(height: 40),
-                      
+
                       // App Title
                       const Text(
                         'Bharat Intelligence',
@@ -127,7 +128,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                         ),
                       ),
                       const SizedBox(height: 12),
-                      
+
                       // Subtitle
                       const Text(
                         'Field Operations Management',
@@ -137,15 +138,16 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      
+
                       const SizedBox(height: 60),
-                      
+
                       // Loading Indicator
                       const SizedBox(
                         width: 40,
                         height: 40,
                         child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
                           strokeWidth: 3,
                         ),
                       ),
@@ -334,7 +336,7 @@ class DashboardScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 32),
-            
+
             // Dashboard Cards
             Expanded(
               child: GridView.count(
@@ -374,8 +376,9 @@ class DashboardScreen extends StatelessWidget {
       ),
     );
   }
-  
-  Widget _buildDashboardCard(String title, IconData icon, Color color, String subtitle) {
+
+  Widget _buildDashboardCard(
+      String title, IconData icon, Color color, String subtitle) {
     return Card(
       elevation: 3,
       shape: RoundedRectangleBorder(
