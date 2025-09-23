@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:async';
 
 import 'config/environment.dart';
@@ -29,7 +28,7 @@ void main() async {
       }
 
       // Initialize Supabase
-      if (kDebugMode) print('🗄️  Initializing Supabase...');
+      if (kDebugMode) print('🗃️  Initializing Supabase...');
       await SupabaseConfig.initialize();
       if (kDebugMode) print('✅ Supabase initialized successfully');
 
@@ -136,7 +135,6 @@ class InitializationErrorScreen extends StatelessWidget {
                   color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Inter',
                 ),
               ),
               const SizedBox(height: 16),
@@ -145,7 +143,6 @@ class InitializationErrorScreen extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 16,
-                  fontFamily: 'Inter',
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -170,7 +167,6 @@ class InitializationErrorScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      fontFamily: 'Inter',
                     ),
                   ),
                 ),
@@ -228,7 +224,6 @@ class ErrorApp extends StatelessWidget {
                       color: Colors.white,
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Inter',
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -237,7 +232,6 @@ class ErrorApp extends StatelessWidget {
                     style: const TextStyle(
                       color: Colors.white70,
                       fontSize: 16,
-                      fontFamily: 'Inter',
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -265,7 +259,6 @@ class ErrorApp extends StatelessWidget {
                             color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
-                            fontFamily: 'Inter',
                           ),
                         ),
                         SizedBox(height: 8),
@@ -274,7 +267,6 @@ class ErrorApp extends StatelessWidget {
                           style: TextStyle(
                             color: Colors.white70,
                             fontSize: 14,
-                            fontFamily: 'Inter',
                           ),
                           textAlign: TextAlign.center,
                         ),
