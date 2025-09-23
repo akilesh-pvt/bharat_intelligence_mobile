@@ -1,111 +1,260 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../presentation/screens/splash/mobile_splash_screen.dart';
-import '../presentation/screens/auth/mobile_login_screen.dart';
-import '../presentation/screens/dashboard/mobile_dashboard_screen.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: '/splash',
+    initialLocation: '/',
     routes: [
       GoRoute(
-        path: '/splash',
-        name: 'splash',
-        builder: (context, state) => const MobileSplashScreen(),
+        path: '/',
+        builder: (context, state) => const SplashScreen(),
       ),
       GoRoute(
         path: '/login',
-        name: 'login',
-        builder: (context, state) => const MobileLoginScreen(),
+        builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
         path: '/dashboard',
-        name: 'dashboard',
-        builder: (context, state) => const MobileDashboardScreen(),
-        routes: [
-          GoRoute(
-            path: '/visitors',
-            name: 'visitors',
-            builder: (context, state) => const DemoScreen(title: 'Visitors Management', subtitle: 'Field visitor registration and tracking'),
-          ),
-          GoRoute(
-            path: '/farmers',
-            name: 'farmers',
-            builder: (context, state) => const DemoScreen(title: 'Farmers Database', subtitle: 'Farmer profiles and crop information'),
-          ),
-          GoRoute(
-            path: '/tasks',
-            name: 'tasks',
-            builder: (context, state) => const DemoScreen(title: 'Task Management', subtitle: 'Field task assignments and tracking'),
-          ),
-          GoRoute(
-            path: '/allowances',
-            name: 'allowances',
-            builder: (context, state) => const DemoScreen(title: 'Allowance Approval', subtitle: 'Petrol allowance requests and approvals'),
-          ),
-        ],
+        builder: (context, state) => const DashboardScreen(),
       ),
     ],
-    errorBuilder: (context, state) => const DemoScreen(
-      title: 'Page Not Found',
-      subtitle: 'The requested page could not be found.',
-    ),
   );
 }
 
-class DemoScreen extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  
-  const DemoScreen({
-    super.key,
-    required this.title,
-    required this.subtitle,
-  });
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    );
+    
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
+    );
+    
+    _startAnimation();
+  }
+
+  void _startAnimation() async {
+    await _animationController.forward();
+    await Future.delayed(const Duration(seconds: 2));
+    if (mounted) {
+      context.go('/login');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF2563EB),
+      body: SafeArea(
+        child: Center(
+          child: AnimatedBuilder(
+            animation: _animationController,
+            builder: (context, child) {
+              return Opacity(
+                opacity: _fadeAnimation.value,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.2),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.admin_panel_settings,
+                        size: 60,
+                        color: Color(0xFF2563EB),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    const Text(
+                      'Bharat Intelligence',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Field Operations Management',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+}
+
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[50],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2563EB),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                ),
+                child: const Icon(
+                  Icons.admin_panel_settings,
+                  color: Colors.white,
+                  size: 50,
+                ),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Welcome Back!',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Sign in to manage field operations',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[600],
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 40),
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: () {
+                    context.go('/dashboard');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.grey[800],
+                    elevation: 2,
+                    side: BorderSide(color: Colors.grey[300]!),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.login, size: 24, color: Colors.red),
+                      SizedBox(width: 12),
+                      Text(
+                        'Sign in with Google',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DashboardScreen extends StatelessWidget {
+  const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/dashboard'),
-        ),
+        title: const Text('Dashboard'),
+        backgroundColor: const Color(0xFF2563EB),
+        foregroundColor: Colors.white,
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.construction,
-                size: 64,
-                color: Colors.grey[400],
+      body: const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.dashboard,
+              size: 100,
+              color: Color(0xFF2563EB),
+            ),
+            SizedBox(height: 24),
+            Text(
+              'Dashboard',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
-              const SizedBox(height: 24),
-              Text(
-                title,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Welcome to Bharat Intelligence',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
               ),
-              const SizedBox(height: 16),
-              Text(
-                subtitle,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Colors.grey[600],
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: () => context.go('/dashboard'),
-                child: const Text('Back to Dashboard'),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
