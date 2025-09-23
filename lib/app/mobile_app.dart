@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 import '../config/environment.dart';
 import '../config/mobile_theme.dart';
-import '../core/constants/app_constants.dart';
 import 'app_router.dart';
 
 class MobileApp extends StatefulWidget {
@@ -80,10 +80,10 @@ class _MobileAppState extends State<MobileApp> {
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
             color: Environment.isDevelopment 
-                ? Colors.orange.withOpacity(0.9) 
+                ? Colors.orange.withValues(alpha: 0.9)
                 : Environment.isStaging 
-                    ? Colors.purple.withOpacity(0.9)
-                    : Colors.red.withOpacity(0.9),
+                    ? Colors.purple.withValues(alpha: 0.9)
+                    : Colors.red.withValues(alpha: 0.9),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
@@ -109,7 +109,6 @@ class _MobileAppState extends State<MobileApp> {
                   color: Colors.white,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Inter',
                 ),
               ),
             ],
@@ -120,7 +119,7 @@ class _MobileAppState extends State<MobileApp> {
   }
 }
 
-// Mobile App Status Screen (for testing Phase 1)
+// Mobile App Status Screen (for Phase 1 testing)
 class MobileAppStatusScreen extends StatelessWidget {
   const MobileAppStatusScreen({super.key});
 
@@ -144,7 +143,7 @@ class MobileAppStatusScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
+                      color: Colors.black.withValues(alpha: 0.2),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),
@@ -166,7 +165,6 @@ class MobileAppStatusScreen extends StatelessWidget {
                   color: Colors.white,
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Inter',
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -178,7 +176,6 @@ class MobileAppStatusScreen extends StatelessWidget {
                 style: const TextStyle(
                   color: Colors.white70,
                   fontSize: 16,
-                  fontFamily: 'Inter',
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -190,10 +187,10 @@ class MobileAppStatusScreen extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
+                  color: Colors.white.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.3),
+                    color: Colors.white.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Column(
@@ -210,7 +207,6 @@ class MobileAppStatusScreen extends StatelessWidget {
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Inter',
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -219,7 +215,6 @@ class MobileAppStatusScreen extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: 14,
-                        fontFamily: 'Inter',
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -230,8 +225,8 @@ class MobileAppStatusScreen extends StatelessWidget {
                     _buildStatusItem('✅ Supabase Integration', true),
                     _buildStatusItem('✅ Mobile Theme Applied', true),
                     _buildStatusItem('✅ Router Configuration', true),
+                    _buildStatusItem('✅ Core Screens Created', true),
                     _buildStatusItem('🚧 Authentication (Phase 2)', false),
-                    _buildStatusItem('🚧 Core Screens (Phase 2)', false),
                   ],
                 ),
               ),
@@ -242,7 +237,7 @@ class MobileAppStatusScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
@@ -250,7 +245,6 @@ class MobileAppStatusScreen extends StatelessWidget {
                   style: const TextStyle(
                     color: Colors.white70,
                     fontSize: 12,
-                    fontFamily: 'Inter',
                   ),
                 ),
               ),
@@ -271,8 +265,8 @@ class MobileAppStatusScreen extends StatelessWidget {
             height: 20,
             decoration: BoxDecoration(
               color: isCompleted 
-                  ? MobileTheme.successGreen.withOpacity(0.2)
-                  : MobileTheme.warningOrange.withOpacity(0.2),
+                  ? MobileTheme.successGreen.withValues(alpha: 0.2)
+                  : MobileTheme.warningOrange.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(
@@ -291,7 +285,6 @@ class MobileAppStatusScreen extends StatelessWidget {
                 color: isCompleted ? Colors.white : Colors.white70,
                 fontSize: 14,
                 fontWeight: isCompleted ? FontWeight.w500 : FontWeight.w400,
-                fontFamily: 'Inter',
               ),
             ),
           ),
