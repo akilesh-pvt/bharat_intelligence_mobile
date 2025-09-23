@@ -7,15 +7,15 @@ class AppRouter {
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => SplashScreen(),
+        builder: (context, state) => const SplashScreen(),
       ),
       GoRoute(
         path: '/login',
-        builder: (context, state) => LoginScreen(),
+        builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
         path: '/dashboard',
-        builder: (context, state) => DashboardScreen(),
+        builder: (context, state) => const DashboardScreen(),
       ),
     ],
   );
@@ -87,7 +87,7 @@ class _SplashScreenState extends State<SplashScreen>
                           borderRadius: BorderRadius.circular(30),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.3),
+                              color: Colors.black.withOpacity(0.3),
                               blurRadius: 25,
                               offset: const Offset(0, 12),
                             ),
@@ -191,7 +191,7 @@ class LoginScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.15),
+                      color: Colors.black.withOpacity(0.15),
                       blurRadius: 20,
                       offset: const Offset(0, 8),
                     ),
@@ -393,7 +393,7 @@ class DashboardScreen extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.1),
+                color: color.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
