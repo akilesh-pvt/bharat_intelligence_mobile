@@ -31,6 +31,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
+  late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
@@ -43,6 +44,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
+    );
+    
+    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.elasticOut),
     );
     
     _startAnimation();
@@ -67,49 +72,85 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
             builder: (context, child) {
               return Opacity(
                 opacity: _fadeAnimation.value,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 120,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.2),
-                            blurRadius: 20,
-                            offset: const Offset(0, 10),
+                child: Transform.scale(
+                  scale: _scaleAnimation.value,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Custom Logo Container
+                      Container(
+                        width: 150,
+                        height: 150,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1E3A8A), // Darker blue background
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.3),
+                              blurRadius: 25,
+                              offset: const Offset(0, 12),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'A',
+                                style: TextStyle(
+                                  fontSize: 60,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF2563EB),
+                                  fontFamily: 'Arial',
+                                ),
+                              ),
+                            ),
                           ),
-                        ],
+                        ),
                       ),
-                      child: const Icon(
-                        Icons.admin_panel_settings,
-                        size: 60,
-                        color: Color(0xFF2563EB),
+                      const SizedBox(height: 40),
+                      
+                      // App Title
+                      const Text(
+                        'Bharat Intelligence',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.5,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 32),
-                    const Text(
-                      'Bharat Intelligence',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.2,
+                      const SizedBox(height: 12),
+                      
+                      // Subtitle
+                      const Text(
+                        'Field Operations Management',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Field Operations Management',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                      
+                      const SizedBox(height: 60),
+                      
+                      // Loading Indicator
+                      const SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          strokeWidth: 3,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },
@@ -139,27 +180,44 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Custom Logo Container
               Container(
-                width: 100,
-                height: 100,
+                width: 120,
+                height: 120,
                 decoration: BoxDecoration(
                   color: const Color(0xFF2563EB),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
+                      color: Colors.black.withValues(alpha: 0.15),
                       blurRadius: 20,
-                      offset: const Offset(0, 10),
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
-                child: const Icon(
-                  Icons.admin_panel_settings,
-                  color: Colors.white,
-                  size: 50,
+                child: Center(
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'A',
+                        style: TextStyle(
+                          fontSize: 48,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF2563EB),
+                          fontFamily: 'Arial',
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
               const Text(
                 'Welcome Back!',
                 style: TextStyle(
@@ -170,14 +228,14 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Sign in to manage field operations',
+                'Sign in to Bharat Intelligence Admin',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey[600],
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 48),
               SizedBox(
                 width: double.infinity,
                 height: 56,
@@ -186,10 +244,9 @@ class LoginScreen extends StatelessWidget {
                     context.go('/dashboard');
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.grey[800],
-                    elevation: 2,
-                    side: BorderSide(color: Colors.grey[300]!),
+                    backgroundColor: const Color(0xFF2563EB),
+                    foregroundColor: Colors.white,
+                    elevation: 3,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -197,7 +254,7 @@ class LoginScreen extends StatelessWidget {
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.login, size: 24, color: Colors.red),
+                      Icon(Icons.login, size: 24),
                       SizedBox(width: 12),
                       Text(
                         'Sign in with Google',
@@ -225,34 +282,140 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard'),
+        title: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Custom logo in app bar
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Center(
+                child: Text(
+                  'A',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF2563EB),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: 12),
+            Text('Bharat Intelligence'),
+          ],
+        ),
         backgroundColor: const Color(0xFF2563EB),
         foregroundColor: Colors.white,
+        elevation: 2,
       ),
-      body: const Center(
+      body: Padding(
+        padding: const EdgeInsets.all(24),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(
-              Icons.dashboard,
-              size: 100,
-              color: Color(0xFF2563EB),
-            ),
-            SizedBox(height: 24),
-            Text(
-              'Dashboard',
+            const Text(
+              'Welcome back!',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
+                color: Colors.black87,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 8),
             Text(
-              'Welcome to Bharat Intelligence',
+              'Manage your field operations efficiently',
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.grey,
+                color: Colors.grey[600],
               ),
+            ),
+            const SizedBox(height: 32),
+            
+            // Dashboard Cards
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                children: [
+                  _buildDashboardCard(
+                    'Field Visitors',
+                    Icons.people,
+                    Colors.blue,
+                    '124 Active',
+                  ),
+                  _buildDashboardCard(
+                    'Farmers',
+                    Icons.agriculture,
+                    Colors.green,
+                    '856 Registered',
+                  ),
+                  _buildDashboardCard(
+                    'Tasks',
+                    Icons.assignment,
+                    Colors.orange,
+                    '23 Pending',
+                  ),
+                  _buildDashboardCard(
+                    'Allowances',
+                    Icons.monetization_on,
+                    Colors.purple,
+                    '12 Approvals',
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  Widget _buildDashboardCard(String title, IconData icon, Color color, String subtitle) {
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                icon,
+                color: color,
+                size: 28,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey[600],
+              ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
