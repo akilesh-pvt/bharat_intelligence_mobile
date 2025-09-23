@@ -8,22 +8,23 @@ class MobileTheme {
   static const Color primaryBlue = Color(0xFF2563EB);
   static const Color primaryBlueLight = Color(0xFF3B82F6);
   static const Color primaryBlueDark = Color(0xFF1E40AF);
-  static const Color accentGreen = Color(0xFF10B981);
+  static const Color secondaryGreen = Color(0xFF10B981);
   static const Color warningOrange = Color(0xFFF59E0B);
   static const Color errorRed = Color(0xFFEF4444);
-  static const Color successGreen = Color(0xFF22C55E);
+  static const Color successGreen = Color(0xFF22C55E); // Added missing successGreen
 
   // Neutral Colors
   static const Color greyLight = Color(0xFFF8FAFC);
-  static const Color grey100 = Color(0xFFF1F5F9);
-  static const Color grey200 = Color(0xFFE2E8F0);
-  static const Color grey300 = Color(0xFFCBD5E1);
-  static const Color grey400 = Color(0xFF94A3B8);
-  static const Color grey500 = Color(0xFF64748B);
-  static const Color grey600 = Color(0xFF475569);
-  static const Color grey700 = Color(0xFF334155);
-  static const Color grey800 = Color(0xFF1E293B);
-  static const Color grey900 = Color(0xFF0F172A);
+  static const Color grey50 = Color(0xFFF9FAFB);
+  static const Color grey100 = Color(0xFFF3F4F6);
+  static const Color grey200 = Color(0xFFE5E7EB);
+  static const Color grey300 = Color(0xFFD1D5DB);
+  static const Color grey400 = Color(0xFF9CA3AF);
+  static const Color grey500 = Color(0xFF6B7280);
+  static const Color grey600 = Color(0xFF4B5563);
+  static const Color grey700 = Color(0xFF374151);
+  static const Color grey800 = Color(0xFF1F2937);
+  static const Color grey900 = Color(0xFF111827);
 
   // Light Theme
   static ThemeData get lightTheme {
@@ -35,9 +36,9 @@ class MobileTheme {
       colorScheme: const ColorScheme.light(
         primary: primaryBlue,
         primaryContainer: primaryBlueLight,
-        secondary: accentGreen,
+        secondary: secondaryGreen,
         secondaryContainer: Color(0xFFDCFCE7),
-        surface: Colors.white,
+        surface: Colors.white, // Use surface instead of background
         surfaceContainerHighest: grey100,
         error: errorRed,
         onPrimary: Colors.white,
@@ -69,7 +70,7 @@ class MobileTheme {
       ),
       
       // Card Theme
-      cardTheme: const CardTheme(
+      cardTheme: const CardThemeData( // Fixed: CardTheme to CardThemeData
         color: Colors.white,
         elevation: 2,
         shadowColor: Colors.black12,
@@ -85,7 +86,7 @@ class MobileTheme {
           backgroundColor: primaryBlue,
           foregroundColor: Colors.white,
           elevation: 2,
-          shadowColor: primaryBlue.withOpacity(0.3),
+          shadowColor: primaryBlue.withValues(alpha: 0.3),
           minimumSize: const Size(double.infinity, 48),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -170,7 +171,7 @@ class MobileTheme {
       // Chip Theme
       chipTheme: ChipThemeData(
         backgroundColor: grey100,
-        selectedColor: primaryBlue.withOpacity(0.1),
+        selectedColor: primaryBlue.withValues(alpha: 0.1),
         disabledColor: grey200,
         labelStyle: const TextStyle(
           color: grey700,
@@ -193,9 +194,9 @@ class MobileTheme {
       colorScheme: const ColorScheme.dark(
         primary: primaryBlueLight,
         primaryContainer: primaryBlueDark,
-        secondary: accentGreen,
+        secondary: secondaryGreen,
         secondaryContainer: Color(0xFF064E3B),
-        surface: Color(0xFF1A1F2A),
+        surface: Color(0xFF1A1F2A), // Use surface instead of background
         surfaceContainerHighest: Color(0xFF252B3A),
         error: errorRed,
         onPrimary: Colors.white,
@@ -224,7 +225,7 @@ class MobileTheme {
         iconTheme: IconThemeData(color: Colors.white, size: 24),
       ),
       
-      cardTheme: const CardTheme(
+      cardTheme: const CardThemeData( // Fixed: CardTheme to CardThemeData
         color: Color(0xFF1A1F2A),
         elevation: 2,
         shadowColor: Colors.black26,
@@ -239,7 +240,7 @@ class MobileTheme {
           backgroundColor: primaryBlueLight,
           foregroundColor: Colors.white,
           elevation: 2,
-          shadowColor: primaryBlueLight.withOpacity(0.3),
+          shadowColor: primaryBlueLight.withValues(alpha: 0.3),
           minimumSize: const Size(double.infinity, 48),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -325,7 +326,7 @@ class MobileTheme {
       bodySmall: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w400,
-        color: secondaryTextColor.withOpacity(0.7),
+        color: secondaryTextColor.withValues(alpha: 0.7),
         height: 1.5,
       ),
       labelLarge: TextStyle(
@@ -343,14 +344,14 @@ class MobileTheme {
       labelSmall: TextStyle(
         fontSize: 10,
         fontWeight: FontWeight.w500,
-        color: secondaryTextColor.withOpacity(0.8),
+        color: secondaryTextColor.withValues(alpha: 0.8),
         height: 1.4,
       ),
     );
   }
 
   // Mobile-specific measurements
-  static const double mobileMaxWidth = 428.0; // iPhone 14 Pro Max width
+  static const double mobileMaxWidth = 428.0;
   static const EdgeInsets mobilePadding = EdgeInsets.all(16.0);
   static const EdgeInsets mobileCardPadding = EdgeInsets.all(16.0);
   static const double mobileButtonHeight = 48.0;
