@@ -16,9 +16,6 @@ class SupabaseConfig {
         authOptions: const FlutterAuthClientOptions(
           authFlowType: AuthFlowType.pkce,
         ),
-        realtimeClientOptions: const RealtimeClientOptions(
-          logLevel: RealtimeLogLevel.info,
-        ),
       );
     } catch (e) {
       throw SupabaseConfigException('Failed to initialize Supabase: $e');
@@ -47,15 +44,6 @@ class SupabaseConfig {
   static const List<OAuthProvider> supportedProviders = [
     OAuthProvider.google,
   ];
-
-  // RLS policies (for reference)
-  static const Map<String, String> rlsPolicies = {
-    'admins_read': 'Admins can view all records',
-    'field_visitors_manage': 'Admins can manage field visitors',
-    'farmers_manage': 'Admins can manage farmers',
-    'tasks_manage': 'Admins can manage tasks',
-    'allowances_manage': 'Admins can manage allowances',
-  };
 
   // Database query limits
   static const int defaultLimit = 20;
@@ -118,11 +106,11 @@ class SupabaseConfig {
   }
 
   // Helper methods for common queries
-  static SupabaseQueryBuilder get admins => client.from(adminsTable);
-  static SupabaseQueryBuilder get fieldVisitors => client.from(fieldVisitorsTable);
-  static SupabaseQueryBuilder get farmers => client.from(farmersTable);
-  static SupabaseQueryBuilder get tasks => client.from(tasksTable);
-  static SupabaseQueryBuilder get allowances => client.from(allowancesTable);
+  static PostgrestQueryBuilder get admins => client.from(adminsTable);
+  static PostgrestQueryBuilder get fieldVisitors => client.from(fieldVisitorsTable);
+  static PostgrestQueryBuilder get farmers => client.from(farmersTable);
+  static PostgrestQueryBuilder get tasks => client.from(tasksTable);
+  static PostgrestQueryBuilder get allowances => client.from(allowancesTable);
 
   // Storage helpers
   static SupabaseStorageClient get storage => client.storage;
