@@ -4,9 +4,6 @@ import 'environment.dart';
 class SupabaseConfig {
   SupabaseConfig._();
 
-  // Supabase client instance
-  static SupabaseClient get client => Supabase.instance.client;
-
   // Initialize Supabase
   static Future<void> initialize() async {
     try {
@@ -22,30 +19,25 @@ class SupabaseConfig {
     }
   }
 
-  // Database configuration
+  // Core clients - Simplified
+  static SupabaseClient get client => Supabase.instance.client;
+  static GoTrueClient get auth => client.auth;
+  static SupabaseStorageClient get storage => client.storage;
+
+  // Database table names
   static const String adminsTable = 'admins';
   static const String fieldVisitorsTable = 'field_visitors';
   static const String farmersTable = 'farmers';
   static const String tasksTable = 'tasks';
   static const String allowancesTable = 'allowances';
 
-  // Storage configuration
+  // Storage bucket names
   static const String adminUploadsBucket = 'admin-uploads';
   static const String profilePicturesBucket = 'profile-pictures';
   static const String taskAttachmentsBucket = 'task-attachments';
   static const String allowancePhotosBucket = 'allowance-photos';
 
-  // Real-time subscriptions
-  static const String notificationsChannel = 'notifications';
-  static const String tasksChannel = 'tasks';
-  static const String allowancesChannel = 'allowances';
-
-  // Auth configuration
-  static const List<OAuthProvider> supportedProviders = [
-    OAuthProvider.google,
-  ];
-
-  // Database query limits
+  // Query limits
   static const int defaultLimit = 20;
   static const int maxLimit = 100;
   static const int minLimit = 5;
@@ -58,13 +50,61 @@ class SupabaseConfig {
     'image/webp',
     'image/heic'
   ];
-  static const List<String> allowedDocumentTypes = [
-    'application/pdf',
-    'application/msword',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-  ];
 
-  // Error handling
+  // Simple database operations
+  static Future<List<Map<String, dynamic>>> fetchAll(String tableName) async {
+    final response = await client.from(tableName).select();
+    return List<Map<String, dynamic>>.from(response);
+  }
+
+  static Future<Map<String, dynamic>?> fetchById(String tableName, String id) async {
+    final response = await client.from(tableName).select().eq('id', id).maybeSingle();
+    return response;
+  }
+
+  static Future<void> insertRecord(String tableName, Map<String, dynamic> data) async {
+    await client.from(tableName).insert(data);
+  }
+
+  static Future<void> updateRecord(String tableName, String id, Map<String, dynamic> data) async {
+    await client.from(tableName).update(data).eq('id', id);
+  }
+
+  static Future<void> deleteRecord(String tableName, String id) async {
+    await client.from(tableName).delete().eq('id', id);
+  }
+
+  // Authentication helpers
+  static Future<AuthResponse> signInWithGoogle() async {
+    return await auth.signInWithOAuth(
+      OAuthProvider.google,
+      redirectTo: 'com.bharatintelligence.admin://auth',
+    );
+  }
+
+  static Future<void> signOut() async {
+    await auth.signOut();
+  }
+
+  static User? get currentUser => auth.currentUser;
+  static Session? get currentSession => auth.currentSession;
+  static bool get isAuthenticated => currentUser != null;
+
+  // Storage operations
+  static Future<String> uploadFile(String bucketName, String path, String filePath) async {
+    final response = await storage.from(bucketName).upload(path, filePath);
+    return response;
+  }
+
+  static Future<void> deleteFile(String bucketName, String path) async {
+    await storage.from(bucketName).remove([path]);
+  }
+
+  static String getPublicUrl(String bucketName, String path) {
+    return storage.from(bucketName).getPublicUrl(path);
+  }
+
+  // Error handling helpers
   static bool isAuthError(Object error) {
     return error is AuthException;
   }
@@ -81,72 +121,26 @@ class SupabaseConfig {
            error.toString().contains('403');
   }
 
-  // Subscription management
-  static final Map<String, RealtimeChannel> _activeChannels = {};
-
-  static RealtimeChannel getOrCreateChannel(String channelName) {
-    if (!_activeChannels.containsKey(channelName)) {
-      _activeChannels[channelName] = client.channel(channelName);
-    }
-    return _activeChannels[channelName]!;
+  // Real-time subscription helper
+  static RealtimeChannel subscribeToTable(
+    String tableName,
+    void Function(PostgrestResponse) callback,
+  ) {
+    return client.channel('public:$tableName').on(
+      RealtimeListenTypes.postgresChanges,
+      ChannelFilter(
+        event: '*',
+        schema: 'public',
+        table: tableName,
+      ),
+      callback,
+    );
   }
 
-  static void removeChannel(String channelName) {
-    if (_activeChannels.containsKey(channelName)) {
-      _activeChannels[channelName]?.unsubscribe();
-      _activeChannels.remove(channelName);
-    }
-  }
-
-  static void cleanupAllChannels() {
-    for (var channel in _activeChannels.values) {
-      channel.unsubscribe();
-    }
-    _activeChannels.clear();
-  }
-
-  // Helper methods for common queries
-  static PostgrestQueryBuilder get admins => client.from(adminsTable);
-  static PostgrestQueryBuilder get fieldVisitors => client.from(fieldVisitorsTable);
-  static PostgrestQueryBuilder get farmers => client.from(farmersTable);
-  static PostgrestQueryBuilder get tasks => client.from(tasksTable);
-  static PostgrestQueryBuilder get allowances => client.from(allowancesTable);
-
-  // Storage helpers
-  static SupabaseStorageClient get storage => client.storage;
-  static SupabaseStorageFileApi adminUploads() => storage.from(adminUploadsBucket);
-  static SupabaseStorageFileApi profilePictures() => storage.from(profilePicturesBucket);
-  static SupabaseStorageFileApi taskAttachments() => storage.from(taskAttachmentsBucket);
-  static SupabaseStorageFileApi allowancePhotos() => storage.from(allowancePhotosBucket);
-
-  // Auth helpers
-  static GoTrueClient get auth => client.auth;
-  static Session? get currentSession => auth.currentSession;
-  static User? get currentUser => auth.currentUser;
-  static bool get isAuthenticated => currentUser != null;
-
-  // Common query filters
-  static PostgrestFilterBuilder activeOnly(PostgrestFilterBuilder query) {
-    return query.eq('is_active', true);
-  }
-
-  static PostgrestFilterBuilder orderByCreatedAt(PostgrestFilterBuilder query, {bool ascending = false}) {
-    return query.order('created_at', ascending: ascending);
-  }
-
-  static PostgrestFilterBuilder orderByUpdatedAt(PostgrestFilterBuilder query, {bool ascending = false}) {
-    return query.order('updated_at', ascending: ascending);
-  }
-
-  static PostgrestFilterBuilder limitResults(PostgrestFilterBuilder query, {int limit = defaultLimit}) {
-    return query.limit(limit.clamp(minLimit, maxLimit));
-  }
-
-  // Pagination helpers
-  static PostgrestFilterBuilder paginate(PostgrestFilterBuilder query, int page, {int pageSize = defaultLimit}) {
-    final from = page * pageSize;
-    final to = from + pageSize - 1;
-    return query.range(from, to);
+  // Cleanup
+  static Future<void> dispose() async {
+    // Cleanup any active subscriptions
+    await client.dispose();
   }
 }
 
@@ -159,36 +153,20 @@ class SupabaseConfigException implements Exception {
   String toString() => 'SupabaseConfigException: $message';
 }
 
-// Enum for database operations
-enum DatabaseOperation {
-  create,
-  read,
-  update,
-  delete,
-}
-
-// Enum for subscription events
-enum SubscriptionEvent {
-  insert,
-  update,
-  delete,
-  all,
-}
-
-// Helper class for database responses
-class DatabaseResponse<T> {
+// Database operation result helper
+class DatabaseResult<T> {
   final T? data;
   final String? error;
   final bool success;
 
-  const DatabaseResponse({this.data, this.error, this.success = true});
+  const DatabaseResult({this.data, this.error, this.success = true});
 
-  factory DatabaseResponse.success(T data) {
-    return DatabaseResponse(data: data, success: true);
+  factory DatabaseResult.success(T data) {
+    return DatabaseResult(data: data, success: true);
   }
 
-  factory DatabaseResponse.error(String error) {
-    return DatabaseResponse(error: error, success: false);
+  factory DatabaseResult.error(String error) {
+    return DatabaseResult(error: error, success: false);
   }
 
   bool get hasData => data != null;
