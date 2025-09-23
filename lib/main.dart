@@ -44,7 +44,7 @@ void main() async {
         SystemChrome.setSystemUIOverlayStyle(
           const SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.dark,
+            statusBarIconBrightness: Brightness.light, // White status icons on blue background
           ),
         );
         if (kDebugMode) print('System UI configured');
@@ -106,19 +106,20 @@ class BharatIntelligenceMobileApp extends StatelessWidget {
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xFF2563EB),
+        seedColor: const Color(0xFF2563EB), // Bharat Intelligence blue
         brightness: Brightness.light,
       ),
       scaffoldBackgroundColor: const Color(0xFFF9FAFB),
       appBarTheme: const AppBarTheme(
         centerTitle: true,
-        elevation: 0,
-        scrolledUnderElevation: 1,
-        backgroundColor: Colors.white,
+        elevation: 2,
+        scrolledUnderElevation: 2,
+        backgroundColor: Color(0xFF2563EB),
+        foregroundColor: Colors.white,
       ),
       cardTheme: CardThemeData(
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 3,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         margin: const EdgeInsets.all(8),
       ),
     );
@@ -139,29 +140,53 @@ class TestScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // Custom Logo Container
                 Container(
-                  width: 100,
-                  height: 100,
+                  width: 120,
+                  height: 120,
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
+                    color: const Color(0xFF1E3A8A),
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.3),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
                   ),
-                  child: const Icon(
-                    Icons.admin_panel_settings,
-                    color: Color(0xFF2563EB),
-                    size: 50,
+                  child: Center(
+                    child: Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'A',
+                          style: TextStyle(
+                            fontSize: 48,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF2563EB),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 32),
                 const Text(
                   'Bharat Intelligence',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
+                    letterSpacing: 1.2,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 const Text(
                   'Mobile App Running Successfully!',
                   style: TextStyle(color: Colors.white70, fontSize: 16),
@@ -169,22 +194,32 @@ class TestScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
                   ),
                   child: const Column(
                     children: [
-                      Icon(Icons.check_circle, color: Colors.white, size: 32),
-                      SizedBox(height: 12),
+                      Icon(Icons.check_circle, color: Colors.white, size: 40),
+                      SizedBox(height: 16),
                       Text(
                         'App Status: Working',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Your mobile app is running successfully with the custom Bharat Intelligence branding.',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
@@ -222,6 +257,12 @@ class ErrorApp extends StatelessWidget {
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Please check the configuration and try again.',
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
